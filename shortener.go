@@ -29,15 +29,26 @@ func newLink(url string) {
 	}
 }
 
-func handler(w http.ResponseWriter, r *http.Request) {
+func shortenHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Hi there, I love %s!", r.URL.Path[1:])
 }
 
 func main() {
 	links = make(map[string]string)
+	links["aaaa"] = "https://austinhenley.com/"
 
-	http.HandleFunc("/shorten/", handler)
-	http.HandleFunc("/", handler)
+	http.HandleFunc("/shorten/", shortenHandler)
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/" || r.URL.Path == "/index.html" {
+			http.ServeFile(w, r, "index.html") // Show index page.
+		} else { // Attempt to serve shortened url.
+			if links[r.URL.Path[1:]] != "" { // Does the link exist?
+				fmt.Fprintf(w, "<meta http-equiv=\"Refresh\" content=\"0; url='%s'\" />", links[r.URL.Path[1:]])
+			} else {
+				fmt.Fprintf(w, "Hmmm.")
+			}
+		}
+	})
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
