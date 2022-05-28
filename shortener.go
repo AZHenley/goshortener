@@ -43,7 +43,8 @@ func main() {
 			http.ServeFile(w, r, "index.html") // Show index page.
 		} else { // Attempt to serve shortened url.
 			if links[r.URL.Path[1:]] != "" { // Does the link exist?
-				fmt.Fprintf(w, "<meta http-equiv=\"Refresh\" content=\"0; url='%s'\" />", links[r.URL.Path[1:]])
+				//fmt.Fprintf(w, "<meta http-equiv=\"Refresh\" content=\"0; url='%s'\" />", links[r.URL.Path[1:]])
+				fmt.Fprintf(w, "<html><meta http-equiv=\"Refresh\" content=\"0; url='%s'\" /></html>", links[r.URL.Path[1:]])
 			} else {
 				fmt.Fprintf(w, "Hmmm.")
 			}
