@@ -22,6 +22,11 @@ func randomString(length int) string {
 }
 
 func newLink(url string) string {
+	// URL must start with http.
+	if url[:4] != "http" {
+		url = "http://" + url
+	}
+
 	for true {
 		rstr := randomString(urlLength) // Get a random string.
 		if links[rstr] == "" {          // If key does not already exist.
@@ -35,7 +40,7 @@ func newLink(url string) string {
 func shortenHandler(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	nl := newLink(r.FormValue("body"))
-	fmt.Fprintf(w, "http://azh.lol/%s", nl)
+	fmt.Fprintf(w, rootDomain+"%s", nl)
 }
 
 func main() {
