@@ -19,23 +19,26 @@ func randomString(length int) string {
 	return string(rstr)
 }
 
-func newLink(url string) {
+func newLink(url string) string {
 	for true {
-		rstr := randomString(4) // Get a random string.
+		rstr := randomString(3) // Get a random string.
 		if links[rstr] == "" {  // If key does not already exist.
 			links[rstr] = url
-			break
+			return rstr
 		}
 	}
+	return "" // Should never happen.
 }
 
 func shortenHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hi there, I love %s!", r.URL.Path[1:])
+	r.ParseForm()
+	nl := newLink(r.FormValue("body"))
+	fmt.Fprintf(w, "%s", nl)
 }
 
 func main() {
 	links = make(map[string]string)
-	links["aaaa"] = "https://austinhenley.com/"
+	links["azh"] = "https://austinhenley.com/"
 
 	http.HandleFunc("/shorten/", shortenHandler)
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -46,7 +49,7 @@ func main() {
 				//fmt.Fprintf(w, "<meta http-equiv=\"Refresh\" content=\"0; url='%s'\" />", links[r.URL.Path[1:]])
 				fmt.Fprintf(w, "<html><meta http-equiv=\"Refresh\" content=\"0; url='%s'\" /></html>", links[r.URL.Path[1:]])
 			} else {
-				fmt.Fprintf(w, "Hmmm.")
+				fmt.Fprintf(w, "Link not found.")
 			}
 		}
 	})

@@ -1,6 +1,19 @@
 <h1>Shorten a URL.</h1>
 
-<form action="/shorten/" method="POST">
+<form id="urlshorten" action="/shorten/" method="POST">
 <div><textarea name="body" rows="1" cols="40"></textarea></div>
 <div><input type="submit" value="Shorten"></div>
 </form>
+
+<br><div id="output"></div>
+
+<script>
+document.forms['urlshorten'].addEventListener('submit', (event) => {
+    event.preventDefault();
+    fetch(event.target.action, {
+        method: 'POST',
+        body: new URLSearchParams(new FormData(event.target)) // event.target is the form
+    }).then(response => response.text())
+  .then(data => document.getElementById("output").innerHTML = "Your new url is: <b>" + data + "</b>.");
+});
+</script>
