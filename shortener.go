@@ -9,6 +9,8 @@ import (
 )
 
 var urlLength = 3
+var maxURLs = 30
+var currentURLs = 0
 var rootDomain = "http://azh.lol/"
 var links map[string]string
 
@@ -23,6 +25,12 @@ func randomString(length int) string {
 }
 
 func newLink(url string) string {
+	// Delete URLs if too many.
+	currentURLs += 1
+	if currentURLs > maxURLs {
+		links = make(map[string]string)
+		currentURLs = 1
+	}
 	// URL must start with http.
 	if url[:4] != "http" {
 		url = "http://" + url

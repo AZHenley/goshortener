@@ -1,3 +1,10 @@
+<html>
+<head>
+<title>Shorten a URL</title>
+<meta property="og:image" content="http://azh.lol/img/dog.jpg">
+</head>
+
+
 <h1>Shorten a URL</h1>
 
 <form id="urlshorten" action="/shorten/" method="POST">
@@ -17,3 +24,5 @@ document.forms['urlshorten'].addEventListener('submit', (event) => {
   .then(data => document.getElementById("output").innerHTML = "Your new url is: <b><a href=\"" + data + "\">" + data + "</a></b>");
 });
 </script>
+
+</html>
