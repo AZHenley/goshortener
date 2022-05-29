@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
 	"math/rand"
 	"net/http"
@@ -47,7 +48,16 @@ func main() {
 	links = make(map[string]string)
 	links["azh"] = "https://austinhenley.com/"
 
-	http.HandleFunc("/shorten/", shortenHandler)
+	http.HandleFunc("/shorten/", shortenHandler)                            // API for creating new links.
+	http.HandleFunc("/img/", func(w http.ResponseWriter, r *http.Request) { // Serve images.
+		buf, err := ioutil.ReadFile(r.URL.Path[1:])
+		if err != nil {
+			fmt.Fprintf(w, "Image not found.")
+		} else {
+			w.Header().Set("Content-Type", "image/png")
+			w.Write(buf)
+		}
+	})
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path == "/" || r.URL.Path == "/index.html" {
 			http.ServeFile(w, r, "index.html") // Show index page.
