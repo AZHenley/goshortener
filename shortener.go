@@ -72,12 +72,12 @@ func main() {
 		} else { // Attempt to serve shortened url.
 			if links[r.URL.Path[1:]] != "" { // Does the link exist?
 				//fmt.Fprintf(w, "<meta http-equiv=\"Refresh\" content=\"0; url='%s'\" />", links[r.URL.Path[1:]])
-				fmt.Fprintf(w, "<html><meta http-equiv=\"Refresh\" content=\"0; url='%s'\" /></html>", links[r.URL.Path[1:]])
+				fmt.Fprintf(w, "<html><meta property=\"og:image\" content=\"http://azh.lol/img/dog.jpg\"><meta http-equiv=\"Refresh\" content=\"0; url='%s'\" /></html>", links[r.URL.Path[1:]])
 			} else {
 				fmt.Fprintf(w, "Link not found.")
 			}
 		}
 	})
 
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(":80", nil))
 }
