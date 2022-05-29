@@ -32,7 +32,7 @@ func newLink(url string) string {
 		currentURLs = 1
 	}
 	// URL must start with http.
-	if url[:4] != "http" {
+	if len(url) < 5 || url[:4] != "http" {
 		url = "http://" + url
 	}
 
