@@ -40,6 +40,7 @@ func newLink(url string) string {
 		rstr := randomString(urlLength) // Get a random string.
 		if links[rstr] == "" {          // If key does not already exist.
 			links[rstr] = url
+			fmt.Printf("%s -> %s", rstr, url)
 			return rstr
 		}
 	}
