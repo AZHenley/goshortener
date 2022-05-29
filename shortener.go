@@ -7,6 +7,8 @@ import (
 	"net/http"
 )
 
+var urlLength = 3
+var rootDomain = "http://azh.lol/"
 var links map[string]string
 
 func randomString(length int) string {
@@ -21,8 +23,8 @@ func randomString(length int) string {
 
 func newLink(url string) string {
 	for true {
-		rstr := randomString(3) // Get a random string.
-		if links[rstr] == "" {  // If key does not already exist.
+		rstr := randomString(urlLength) // Get a random string.
+		if links[rstr] == "" {          // If key does not already exist.
 			links[rstr] = url
 			return rstr
 		}
@@ -33,7 +35,7 @@ func newLink(url string) string {
 func shortenHandler(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	nl := newLink(r.FormValue("body"))
-	fmt.Fprintf(w, "%s", nl)
+	fmt.Fprintf(w, "http://azh.lol/%s", nl)
 }
 
 func main() {
